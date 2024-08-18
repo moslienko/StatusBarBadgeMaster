@@ -9,23 +9,44 @@ import UIKit
 
 public class AppStatusBarView: UIView {
     
-    private let iconImageView: UIImageView
-    private let titleLabel: UILabel
-    private let containerView: UIView
+    // MARK: - Params
+    private let config: AppStatusBarViewConfig
     
-    override init(frame: CGRect) {
-        iconImageView = UIImageView()
-        titleLabel = UILabel()
-        containerView = UIView()
+    // MARK: - Config
+    private lazy var iconImageView: UIImageView = {
+        let imageView = UIImageView()
+        return imageView
+    }()
+    
+    private lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        return label
+    }()
+    
+    private lazy var containerView: UIView = {
+        let view = UIView()
+        return view
+    }()
+    
+    // MARK: - Init
+    
+    public init(icon: UIImage?, title: String, config: AppStatusBarViewConfig = AppStatusBarViewConfig()) {
+        self.config = config
+        super.init(frame: .zero)
+        
+        configure(icon: icon, title: title)
+        setupView()
+    }
+    
+    override private init(frame: CGRect) {
+        config = AppStatusBarViewConfig()
         super.init(frame: frame)
         
         setupView()
     }
     
     required init?(coder: NSCoder) {
-        iconImageView = UIImageView()
-        titleLabel = UILabel()
-        containerView = UIView()
+        config = AppStatusBarViewConfig()
         super.init(coder: coder)
         
         setupView()
@@ -38,18 +59,17 @@ public class AppStatusBarView: UIView {
 
 public extension AppStatusBarView {
     
-    static func embedInWindows() {
-        let position = AppStatusBarView.getBadgePosition()
+    func embedInWindows() {
+        let position = getBadgePosition()
         print("hasNotch position - \(position)")
         guard position != .none else {
             return
         }
         
-        let statusBarView = AppStatusBarView()
-        statusBarView.configure(icon: UIImage(named: "apple_logo"), title: "App Title")
-        statusBarView.translatesAutoresizingMaskIntoConstraints = false
+        let statusBarView = self
         
         if let window = UIApplication.shared.windows.first {
+            window.subviews.filter({ $0 is AppStatusBarView }).forEach({ $0.removeFromSuperview() })
             window.addSubview(statusBarView)
             
             statusBarView.translatesAutoresizingMaskIntoConstraints = false
@@ -62,8 +82,8 @@ public extension AppStatusBarView {
         }
     }
 
-    static func getBadgePosition() -> BadgePosition {
-        guard UIDevice.current.userInterfaceIdiom == .phone else {
+    func getBadgePosition() -> BadgePosition {
+        guard UIDevice.current.model.range(of: "iPhone") != nil else {
             return .none
         }
         let window = UIApplication.shared.windows.first { $0.isKeyWindow }
@@ -72,11 +92,13 @@ public extension AppStatusBarView {
         return BadgePosition.create(from: topInset)
     }
     
-    
     func configure(icon: UIImage?, title: String) {
         iconImageView.image = icon?.withRenderingMode(.alwaysTemplate)
-        iconImageView.tintColor = .white
         titleLabel.text = title
+    }
+    
+    func setDisplay(isHidden: Bool) {
+        self.isHidden = isHidden
     }
 }
 
@@ -96,17 +118,17 @@ private extension AppStatusBarView {
     private func setupView() {
         backgroundColor = .clear
         
-        containerView.backgroundColor = .systemBlue
-        containerView.layer.cornerRadius = 22 / 2
+        containerView.backgroundColor = config.containerConfig.backgroundColor
+        containerView.layer.cornerRadius = config.containerConfig.cornerRadius
         containerView.layer.masksToBounds = true
         
         iconImageView.contentMode = .scaleAspectFit
         iconImageView.translatesAutoresizingMaskIntoConstraints = false
-        iconImageView.tintColor = .white
+        iconImageView.tintColor = config.iconConfig.tintColor
         
         titleLabel.textAlignment = .center
-        titleLabel.font = UIFont.systemFont(ofSize: 13, weight: .bold)
-        titleLabel.textColor = .white
+        titleLabel.font = config.titleConfig.font
+        titleLabel.textColor = config.titleConfig.color
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         
         containerView.addSubview(iconImageView)
@@ -128,12 +150,12 @@ private extension AppStatusBarView {
         
         let constraints = [
             containerView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            containerView.heightAnchor.constraint(equalToConstant: 22),
+            containerView.heightAnchor.constraint(equalToConstant: config.containerConfig.height),
             
             iconImageView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 8),
             iconImageView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
-            iconImageView.widthAnchor.constraint(equalToConstant: 14),
-            iconImageView.heightAnchor.constraint(equalToConstant: 14),
+            iconImageView.widthAnchor.constraint(equalToConstant: config.iconConfig.width),
+            iconImageView.heightAnchor.constraint(equalToConstant: config.containerConfig.height),
             
             titleLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 8),
             titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -8),

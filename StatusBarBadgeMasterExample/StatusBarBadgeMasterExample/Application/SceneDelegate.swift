@@ -13,7 +13,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        print("zzz")
         guard let windowScene = (scene as? UIWindowScene) else {
             return
         }
@@ -25,8 +24,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.rootViewController = UINavigationController(rootViewController: vc)
         
         window?.makeKeyAndVisible()
-        
-        AppStatusBarView.embedInWindows()
+
+        AppStatusBarView(
+            icon: UIImage(named: "apple_logo"),
+            title: "App Title",
+            config: AppStatusBarViewConfig()
+        ).embedInWindows()
     }
     
     func sceneDidDisconnect(_ scene: UIScene) {}
