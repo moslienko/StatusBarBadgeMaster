@@ -18,13 +18,28 @@ public class AppStatusBarView: UIView {
         return imageView
     }()
     
+    private lazy var contentStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.alignment = .fill
+        stackView.distribution = .fill
+        stackView.axis = .horizontal
+        stackView.spacing = 8.0
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.addArrangedSubview(iconImageView)
+        stackView.addArrangedSubview(titleLabel)
+        
+        return stackView
+    }()
+    
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private lazy var containerView: UIView = {
         let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
@@ -81,7 +96,7 @@ public extension AppStatusBarView {
             ])
         }
     }
-
+    
     func getBadgePosition() -> BadgePosition {
         guard UIDevice.current.model.range(of: "iPhone") != nil else {
             return .none
@@ -94,6 +109,7 @@ public extension AppStatusBarView {
     
     func configure(icon: UIImage?, title: String) {
         iconImageView.image = icon?.withRenderingMode(.alwaysTemplate)
+        iconImageView.isHidden = icon == nil
         titleLabel.text = title
     }
     
@@ -117,22 +133,19 @@ private extension AppStatusBarView {
     
     private func setupView() {
         backgroundColor = .clear
-        
+                
         containerView.backgroundColor = config.containerConfig.backgroundColor
         containerView.layer.cornerRadius = config.containerConfig.cornerRadius
         containerView.layer.masksToBounds = true
         
         iconImageView.contentMode = .scaleAspectFit
-        iconImageView.translatesAutoresizingMaskIntoConstraints = false
         iconImageView.tintColor = config.iconConfig.tintColor
         
         titleLabel.textAlignment = .center
         titleLabel.font = config.titleConfig.font
         titleLabel.textColor = config.titleConfig.color
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        containerView.addSubview(iconImageView)
-        containerView.addSubview(titleLabel)
+        containerView.addSubview(contentStackView)
         addSubview(containerView)
         
         setupConstraints()
@@ -152,14 +165,12 @@ private extension AppStatusBarView {
             containerView.centerXAnchor.constraint(equalTo: centerXAnchor),
             containerView.heightAnchor.constraint(equalToConstant: config.containerConfig.height),
             
-            iconImageView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 8),
-            iconImageView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
             iconImageView.widthAnchor.constraint(equalToConstant: config.iconConfig.width),
             iconImageView.heightAnchor.constraint(equalToConstant: config.containerConfig.height),
             
-            titleLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 8),
-            titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -8),
-            titleLabel.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+            contentStackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 8),
+            contentStackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -8),
+            contentStackView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
         ]
         
         NSLayoutConstraint.activate(constraints)

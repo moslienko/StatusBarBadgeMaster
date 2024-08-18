@@ -102,9 +102,9 @@ enum BadgeParams {
             case .blue:
                 return .systemBlue
             case .red:
-                return .red
+                return .systemRed
             case .purple:
-                return .purple
+                return .systemPurple
             }
         }
     }
