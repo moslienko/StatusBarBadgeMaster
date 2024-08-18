@@ -23,7 +23,6 @@ public class AppStatusBarView: UIView {
         stackView.alignment = .fill
         stackView.distribution = .fill
         stackView.axis = .horizontal
-        stackView.spacing = 8.0
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.addArrangedSubview(iconImageView)
         stackView.addArrangedSubview(titleLabel)
@@ -133,7 +132,9 @@ private extension AppStatusBarView {
     
     private func setupView() {
         backgroundColor = .clear
-                
+        
+        contentStackView.spacing = config.containerConfig.iconTitleSpacing
+        
         containerView.backgroundColor = config.containerConfig.backgroundColor
         containerView.layer.cornerRadius = config.containerConfig.cornerRadius
         containerView.layer.masksToBounds = true
@@ -168,8 +169,8 @@ private extension AppStatusBarView {
             iconImageView.widthAnchor.constraint(equalToConstant: config.iconConfig.width),
             iconImageView.heightAnchor.constraint(equalToConstant: config.containerConfig.height),
             
-            contentStackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 8),
-            contentStackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -8),
+            contentStackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: config.containerConfig.contentLeftInset),
+            contentStackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: config.containerConfig.contentRightInset),
             contentStackView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
         ]
         
