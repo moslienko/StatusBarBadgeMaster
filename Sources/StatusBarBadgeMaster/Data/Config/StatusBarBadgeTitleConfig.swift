@@ -1,5 +1,5 @@
 //
-//  BadgeViewTitleConfig.swift
+//  StatusBarBadgeTitleConfig.swift
 //
 //
 //  Created by Pavel Moslienko on 17.08.2024.
@@ -8,7 +8,7 @@
 import UIKit
 
 /// Configuration for the badge title.
-public struct BadgeViewTitleConfig {
+public struct StatusBarBadgeTitleConfig {
     
     /// The font used for the badge title.
     public var font: UIFont

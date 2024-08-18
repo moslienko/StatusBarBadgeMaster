@@ -1,5 +1,5 @@
 //
-//  BadgeViewIconConfig.swift
+//  StatusBarBadgeIconConfig.swift
 //
 //
 //  Created by Pavel Moslienko on 17.08.2024.
@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 /// Configuration for the badge icon.
-public struct BadgeViewIconConfig {
+public struct StatusBarBadgeIconConfig {
     
     /// The width of the badge icon.
     public var width: CGFloat

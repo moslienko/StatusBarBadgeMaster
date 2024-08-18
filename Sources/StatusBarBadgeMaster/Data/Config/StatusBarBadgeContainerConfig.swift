@@ -1,5 +1,5 @@
 //
-//  BadgeViewContainerConfig.swift
+//  StatusBarBadgeContainerConfig.swift
 //
 //
 //  Created by Pavel Moslienko on 17.08.2024.
@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 /// Configuration for the badge container.
-public struct BadgeViewContainerConfig {
+public struct StatusBarBadgeContainerConfig {
     
     /// The height of the badge container.
     public var height: CGFloat

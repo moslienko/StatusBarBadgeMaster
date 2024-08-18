@@ -11,15 +11,15 @@ import UIKit
 
 class PlaygroundViewControllerModel {
     
-    var config = AppStatusBarViewConfig()
+    var config = StatusBarBadgeConfig()
     var badgeIcon: UIImage? = BadgeParams.IconOptions.customAsset.icon
     
     func updateBadge() {
-        AppStatusBarView(
+        StatusBarBadgeView(
             icon: badgeIcon,
             title: "App Title",
             config: config
-        ).embedInWindows()
+        ).embedInWindow()
     }
 }
 

@@ -1,5 +1,5 @@
 //
-//  AppStatusBarView.swift
+//  StatusBarBadgeView.swift
 //
 //
 //  Created by Pavel Moslienko on 20.06.2024.
@@ -8,12 +8,12 @@
 import UIKit
 
 /// A view that displays a badge view in status bar.
-public class AppStatusBarView: UIView {
+public class StatusBarBadgeView: UIView {
     
     // MARK: - Params
     
     /// Configuration object.
-    private let config: AppStatusBarViewConfig
+    private let config: StatusBarBadgeConfig
     
     // MARK: - UI Components
     
@@ -56,7 +56,7 @@ public class AppStatusBarView: UIView {
     ///   - icon: The icon image to display in the badge view.
     ///   - title: The title text to display in the badge view.
     ///   - config: The configuration object for customizing the appearance.
-    public init(icon: UIImage?, title: String, config: AppStatusBarViewConfig = AppStatusBarViewConfig()) {
+    public init(icon: UIImage?, title: String, config: StatusBarBadgeConfig = StatusBarBadgeConfig()) {
         self.config = config
         super.init(frame: .zero)
         configure(icon: icon, title: title)
@@ -64,13 +64,13 @@ public class AppStatusBarView: UIView {
     }
     
     override private init(frame: CGRect) {
-        self.config = AppStatusBarViewConfig()
+        self.config = StatusBarBadgeConfig()
         super.init(frame: frame)
         setupView()
     }
     
     required init?(coder: NSCoder) {
-        self.config = AppStatusBarViewConfig()
+        self.config = StatusBarBadgeConfig()
         super.init(coder: coder)
         setupView()
     }
@@ -81,16 +81,16 @@ public class AppStatusBarView: UIView {
 }
 
 // MARK: - Module public methods
-public extension AppStatusBarView {
+public extension StatusBarBadgeView {
     
     /// Embed the status badge view in the main window.
-    func embedInWindows() {
+    func embedInWindow() {
         let position = getBadgePosition()
         print("Badge position: \(position)")
         guard position != .none else { return }
         
         if let window = UIApplication.shared.windows.first {
-            window.subviews.filter({ $0 is AppStatusBarView }).forEach({ $0.removeFromSuperview() })
+            window.subviews.filter({ $0 is StatusBarBadgeView }).forEach({ $0.removeFromSuperview() })
             window.addSubview(self)
             
             translatesAutoresizingMaskIntoConstraints = false
@@ -132,7 +132,7 @@ public extension AppStatusBarView {
 }
 
 // MARK: - Actions
-private extension AppStatusBarView {
+private extension StatusBarBadgeView {
     
     /// Handles orientation changes to update the visibility of the status badge view.
     @objc
@@ -145,7 +145,7 @@ private extension AppStatusBarView {
 }
 
 // MARK: - Setup methods
-private extension AppStatusBarView {
+private extension StatusBarBadgeView {
     
     /// Set up the initial view.
     private func setupView() {

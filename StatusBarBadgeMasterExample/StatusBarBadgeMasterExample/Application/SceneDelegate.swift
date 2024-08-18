@@ -24,12 +24,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.rootViewController = UINavigationController(rootViewController: vc)
         
         window?.makeKeyAndVisible()
-
-        AppStatusBarView(
+        
+        StatusBarBadgeView(
             icon: UIImage(named: "apple_logo"),
-            title: "App Title",
-            config: AppStatusBarViewConfig()
-        ).embedInWindows()
+            title: "App Title"
+        ).embedInWindow()
     }
     
     func sceneDidDisconnect(_ scene: UIScene) {}
