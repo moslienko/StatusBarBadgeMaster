@@ -16,7 +16,6 @@ public struct StatusBarBadgeTitleConfig {
     public var color: UIColor
     
     /// Initializes a new badge title configuration.
-    ///
     /// - Parameters:
     ///   - font: The font used for the title text.
     ///   - color: The color of the title text.
